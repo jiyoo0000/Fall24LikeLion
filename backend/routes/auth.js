@@ -6,11 +6,6 @@ const router = express.Router();
 
 const mongoConfig = require('./mongoConfig.json');
 
-
-const app = express();
-app.use(cors());
-app.use(bodyParser.json()); // To handle JSON payloads
-
 const uri = mongoConfig.uri;
 
 const client = new MongoClient(uri, {
@@ -32,9 +27,9 @@ async function connectToMongo() {
 }
 
 // Create a route to store the user UID
-app.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const { uid, email } = req.body; // Assuming `uid` and `email` are sent from frontend
-    console.log(req);
+
 
     if (!uid || !email) {
         return res.status(400).send('Invalid request: UID and email are required.');
@@ -49,12 +44,6 @@ app.post('/signup', async (req, res) => {
         console.error('Error storing user UID:', error);
         res.status(500).send('Internal server error');
     }
-});
-
-// Start your backend server
-const port = process.env.PORT || 3001;
-app.listen(port, () => {
-    console.log(`Backend running on port ${port}`);
 });
 
 module.exports = router;
