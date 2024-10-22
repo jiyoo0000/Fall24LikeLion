@@ -65,29 +65,28 @@ example
 {
   "uid": "R2lQRFIwa3RJMgJUawGvYGmNM163",
   "email" : "bbeat2782@gmail.com",
-  "id" : ["course1", "course2", "course3", "course4"]
+  "course_id" : ["course1", "course2", "course3", "course4"]
 }
 
 response
 
 {
   "message": "Course IDs for user bbeat2782@gmail.com",
-  "ids": ["course1", "course2", "course3", "course4"].
+  "course_id": ["course1", "course2", "course3", "course4"].
 }
 
-*/ 
-router.get('/login', async (req, res) => {
 
-    // users Schema
-    const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
         uid: String,
         email: String,
-        id: [String]
+        course_id: [String]
     });
 
     const User = mongoose.model('User', UserSchema);
-    const Course = mongoose.model('Course', CourseSchema);
 
+    const user = await User.findOne({ email })
+*/ 
+router.get('/login', async (req, res) => {
 
     const { email } = req.body;
 
@@ -96,7 +95,9 @@ router.get('/login', async (req, res) => {
     }
 
     try{
-        const user = await User.findOne({ email })
+        const db = await connectToMongo();
+        const collection = db.collection('users'); // Direct access to collection without a schema
+        const user = await collection.findOne({ email });
 
         // If there is no user's email
         if(!user){
@@ -106,7 +107,8 @@ router.get('/login', async (req, res) => {
         // response course id array
         return res.status(200).json({
             message: `Course IDs for user ${email}`,
-            ids: user.id
+            courses_id: user.course_id,
+            chatroom: user.chatroom || {}
           });
 
         
@@ -117,5 +119,28 @@ router.get('/login', async (req, res) => {
 
 })
 
+router.put('/login', async (req, res) => {
+    const {uid, name} = req.body;
 
+    if (!uid || !name) {
+        return res.status(400).send('Invalid request: UID and name are required.');
+    }
+    
+    try{
+        // connecting to Mongo
+        const db = await connectToMongo();
+        const collection = db.collection('users');
+
+        //Update user's name based on uid
+        const result = await collection.updateOne(
+            { _id: uid },  // Match user by uid
+            { $set: { name: name } }  // Update the name field
+        );
+
+        res.status(200).send({ message: 'User name updated', name: user.name});
+    }catch(error){
+        console.error('Error occurs', error);
+        res.status(500).send('internal server error');
+    }
+});
 module.exports = router;
