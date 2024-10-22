@@ -3,6 +3,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const bodyParser = require('body-parser'); // To parse incoming request bodies
 const cors = require('cors');
 const router = express.Router();
+const mongoose = require('mongoose');
 
 const mongoConfig = require('./mongoConfig.json');
 
@@ -26,6 +27,10 @@ async function connectToMongo() {
     }
 }
 
+
+
+
+
 // Create a route to store the user UID
 router.post('/signup', async (req, res) => {
     const { uid, email } = req.body; // Assuming `uid` and `email` are sent from frontend
@@ -38,13 +43,22 @@ router.post('/signup', async (req, res) => {
     try {
         const db = await connectToMongo();
         const collection = db.collection('users'); // Create or use 'users' collection
-        const result = await collection.insertOne({ uid, email }); // Store uid and email
+        const result = await collection.updateOne(
+            { _id: uid },
+            { $setOnInsert: { _id: uid, email: email } },
+            { upsert: true }); // Store uid and email
         res.status(201).send({ message: 'User stored successfully', userId: result.insertedId });
     } catch (error) {
         console.error('Error storing user UID:', error);
         res.status(500).send('Internal server error');
     }
 });
+
+
+
+
+
+
 /*
 example
 
@@ -58,7 +72,7 @@ response
 
 {
   "message": "Course IDs for user bbeat2782@gmail.com",
-  "ids": ["course1", "course2", "course3", "course4"]
+  "ids": ["course1", "course2", "course3", "course4"].
 }
 
 */ 
@@ -102,7 +116,6 @@ router.get('/login', async (req, res) => {
     }
 
 })
-
 
 
 module.exports = router;
