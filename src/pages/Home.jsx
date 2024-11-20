@@ -15,7 +15,7 @@ import axios from 'axios';
 const Home = () => {
   const { currentUser } = useAuth();
   // initial socket url
-  const [socketUrl, setSocketUrl] = useState('ws://localhost:3001');
+  const [socketUrl, setSocketUrl] = useState('ws://socket.eba-bmjb3sbt.us-west-1.elasticbeanstalk.com');
   // state to store the message history
   const [messageHistory, setMessageHistory] = useState([]);
 
@@ -24,7 +24,7 @@ const Home = () => {
   const [classes, setClasses] = useState([]); // State for enrolled classes
   const [currentClass, setCurrentClass] = useState(null);
   const [currentClassId, setCurrentClassId] = useState(null);
-    const [chatlog, setChatlog] = useState([])
+  const [chatlog, setChatlog] = useState([])
 
 
   // useWebSocket hook to connect to the websocket
@@ -56,7 +56,7 @@ const Home = () => {
 
   // function to open the socket connection to the echo route
   const handleClickSetSocketUrl = useCallback(
-    () => setSocketUrl('ws://localhost:3001/echo'),
+    () => setSocketUrl('ws://socket.eba-bmjb3sbt.us-west-1.elasticbeanstalk.com/echo'),
     []
   );
 

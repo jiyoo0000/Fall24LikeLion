@@ -33,7 +33,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/course', courseRouter);
-app.use('/echo', wsRouter);
+// app.use('/echo', wsRouter);
 app.use('/chatroom', chatRouter);
 
 // catch 404 and forward to error handler
