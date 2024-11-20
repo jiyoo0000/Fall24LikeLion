@@ -6,3 +6,4 @@ src/firebase/firebaseConfig.json
 ./backend/.idea
 ./backend/.DS_Store
 /backend/routes/mongoConfig.json
+.env

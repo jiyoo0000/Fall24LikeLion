@@ -4,8 +4,14 @@ const bodyParser = require('body-parser'); // To parse incoming request bodies
 const cors = require('cors');
 const router = express.Router();
 
+let mongoConfig;
+try {
+    mongoConfig = require('./mongoConfig.json');
+} catch (error) {
+    console.error('Failed to load mongoConfig.json:', error);
+    mongoConfig = { uri: process.env.MONGO_URI };
+}
 
-const mongoConfig = require('./mongoConfig.json');
 const uri = mongoConfig.uri;
 
 const client = new MongoClient(uri, {

@@ -2,7 +2,14 @@ var express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 var router = express.Router();
 
-const mongoConfig = require('./mongoConfig.json');
+let mongoConfig;
+try {
+    mongoConfig = require('./mongoConfig.json');
+} catch (error) {
+    console.error('Failed to load mongoConfig.json:', error);
+    mongoConfig = { uri: process.env.MONGO_URI };
+}
+
 const uri = mongoConfig.uri;
 
 const client = new MongoClient(uri, {

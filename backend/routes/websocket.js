@@ -1,8 +1,13 @@
 const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const router = express.Router();
-
-const mongoConfig = require('./mongoConfig.json');
+let mongoConfig;
+try {
+    mongoConfig = require('./mongoConfig.json');
+} catch (error) {
+    console.error('Failed to load mongoConfig.json:', error);
+    mongoConfig = { uri: process.env.MONGO_URI };
+}
 const uri = mongoConfig.uri;
 
 // 몽고 연결 펑션
