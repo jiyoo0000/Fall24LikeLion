@@ -177,4 +177,59 @@ router.delete('/', async (req, res) => {
     }
 });
 
+
+
+router.get('/:courseId/users', async (req, res) => {
+    const { courseId } = req.params;
+    console.log("Requested courseId:", courseId); // 요청된 courseId 확인
+
+    if (!courseId) {
+        return res.status(400).send('Course ID parameter is required.');
+    }
+
+    try {
+        const db = await connectToMongo();
+        const coursesCollection = db.collection('course');
+        const usersCollection = db.collection('users');
+
+        // courseId 변환 확인
+        let courseObjectId;
+        try {
+            courseObjectId = ObjectId.createFromHexString(courseId);
+        } catch (error) {
+            console.error("Invalid courseId format:", courseId); // 유효하지 않은 ObjectId 형식
+            return res.status(400).send('Invalid course ID format.');
+        }
+
+        // course 문서 확인
+        const course = await coursesCollection.findOne({ _id: courseObjectId });
+        console.log("Found course:", course);
+
+        if (!course) {
+            return res.status(404).send('Course not found.');
+        }
+
+        // course.users에 있는 사용자 ID 목록이 제대로 설정되어 있는지 확인
+        const userIds = course.users || [];
+        console.log("User IDs in course:", userIds);
+
+        
+
+        // users 컬렉션에서 사용자 정보 가져오기
+        const users = await usersCollection
+            .find({ _id: { $in: userIds } })
+            .project({ _id: 1, name: 1 })
+            .toArray();
+        console.log("Fetched users:", users);
+
+        if (users.length === 0) {
+            return res.status(204).send('No users found for this course.');
+        }
+
+        return res.status(200).json(users);
+    } catch (error) {
+        console.error('Error fetching users for course:', error);
+        return res.status(500).send('An error occurred while fetching users for the course.');
+    }
+});
 module.exports = router;
