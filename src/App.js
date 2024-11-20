@@ -45,6 +45,7 @@ function App() {
   
   let routesElement = useRoutes(routesArray);
 
+
   return (
     <AuthProvider>
         {routesElement}
