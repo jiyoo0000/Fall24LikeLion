@@ -8,6 +8,9 @@ try {
     console.error('Failed to load mongoConfig.json:', error);
     mongoConfig = { uri: process.env.MONGO_URI };
 }
+finally {
+    console.log('mongoConfig successfully loaded');
+}
 const uri = mongoConfig.uri;
 
 // 몽고 연결 펑션

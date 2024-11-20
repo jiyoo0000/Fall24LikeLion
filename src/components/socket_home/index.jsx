@@ -11,7 +11,7 @@ const Home = () => {
     const classes = ["class1", "class2", "class3"]
 
     // initial socket url
-    const [socketUrl, setSocketUrl] = useState('ws://localhost:3001');
+    const [socketUrl, setSocketUrl] = useState();
 
     // state to store the message history
     const [messageHistory, setMessageHistory] = useState([]);
@@ -45,7 +45,7 @@ const Home = () => {
 
     // function to open the socket connection to the echo route
     const handleClickSetSocketUrl = useCallback(
-        () => setSocketUrl('ws://localhost:3001/echo'),
+        () => setSocketUrl('/api/echo'),
         []
     );
 

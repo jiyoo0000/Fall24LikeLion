@@ -15,7 +15,7 @@ import axios from 'axios';
 const Home = () => {
   const { currentUser } = useAuth();
   // initial socket url
-  const [socketUrl, setSocketUrl] = useState('ws://localhost:3001');
+  const [socketUrl, setSocketUrl] = useState(process.env.REACT_APP_SOCKET_URL);
   // state to store the message history
   const [messageHistory, setMessageHistory] = useState([]);
 
@@ -24,7 +24,7 @@ const Home = () => {
   const [classes, setClasses] = useState([]); // State for enrolled classes
   const [currentClass, setCurrentClass] = useState(null);
   const [currentClassId, setCurrentClassId] = useState(null);
-    const [chatlog, setChatlog] = useState([])
+  const [chatlog, setChatlog] = useState([])
 
 
   // useWebSocket hook to connect to the websocket
@@ -46,7 +46,7 @@ const Home = () => {
   useEffect(() => {
       if (lastMessage !== null) {
           const m = JSON.parse(lastMessage.data);
-          if (m.message.sent_uid !== currentUser.uid && m.course === currentClassId) {
+          if (m.message?.sent_uid !== currentUser.uid && m.course === currentClassId) {
               setChatlog((prev) => prev.concat(m.message));
               console.log(m);
               console.log(currentUser.uid);
@@ -56,7 +56,7 @@ const Home = () => {
 
   // function to open the socket connection to the echo route
   const handleClickSetSocketUrl = useCallback(
-    () => setSocketUrl('ws://localhost:3001/echo'),
+    () => setSocketUrl(process.env.REACT_APP_SOCKET_URL + '/echo'),
     []
   );
 
@@ -83,7 +83,7 @@ const Home = () => {
       if (!currentUser || !currentUser.uid) return; // Wait until currentUser and uid are available
 
       try {
-        const response = await axios.get('http://localhost:3001/course/enrolled', {
+        const response = await axios.get('/api/course/enrolled', {
           headers: { 'Content-Type': 'application/json' },
           params: { uid: currentUser.uid },
         });
@@ -99,7 +99,7 @@ const Home = () => {
       if (!currentClassId) return;
 
       try {
-          const response = await axios.get('http://localhost:3001/chatroom/chatlog', {
+          const response = await axios.get('/api/chatroom/chatlog', {
               headers: { 'Content-Type': 'application/json' },
               params: { courseID: currentClassId },
           });

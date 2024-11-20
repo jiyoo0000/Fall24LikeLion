@@ -26,7 +26,7 @@ export const doSignInWithGoogle = async () => {
 
   console.log(fullName);
 
-  await axios.post('http://localhost:3001/auth/signup', {
+  await axios.post('/api/auth/signup', {
     uid: user.uid,
     email: user.email,
     name: fullName,

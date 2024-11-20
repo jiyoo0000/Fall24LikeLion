@@ -15,7 +15,7 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.put('http://localhost:3001/auth/name', {
+            const response = await axios.put('/api/auth/name', {
                 headers: { 'Content-Type': 'application/json' },
                 params: {uid: currentUser.uid, name: name}
             })
@@ -30,7 +30,7 @@ const Profile = () => {
 
     const dropCourse = async (courseId) => {
         try {
-            const response = await axios.delete('http://localhost:3001/course', {
+            const response = await axios.delete('/api/course', {
                 headers: { 'Content-Type': 'application/json' },
                 params: {uid: currentUser.uid, courseId: courseId}
             });
@@ -50,7 +50,7 @@ const Profile = () => {
           if (!currentUser || !currentUser.uid) return; // Wait until currentUser and uid are available
     
           try {
-            const response = await axios.get('http://localhost:3001/course/enrolled', {
+            const response = await axios.get('/api/course/enrolled', {
               headers: { 'Content-Type': 'application/json' },
               params: { uid: currentUser.uid },
             });

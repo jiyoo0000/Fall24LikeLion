@@ -36,7 +36,7 @@ const Register = () => {
                 const name = `${firstName} ${lastName}`;
 
                 // Send UID and email to backend (if required)
-                await axios.post('http://localhost:3001/auth/signup/', {
+                await axios.post('/api/auth/signup/', {
                     uid: user.uid,
                     email: user.email,
                     name: name,
