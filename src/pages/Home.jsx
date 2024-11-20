@@ -15,7 +15,7 @@ import axios from 'axios';
 const Home = () => {
   const { currentUser } = useAuth();
   // initial socket url
-  const [socketUrl, setSocketUrl] = useState('wss://d38ox1p3v0d3i4.cloudfront.net');
+  const [socketUrl, setSocketUrl] = useState(process.env.REACT_APP_SOCKET_URL);
   // state to store the message history
   const [messageHistory, setMessageHistory] = useState([]);
 
@@ -56,7 +56,7 @@ const Home = () => {
 
   // function to open the socket connection to the echo route
   const handleClickSetSocketUrl = useCallback(
-    () => setSocketUrl('wss://d38ox1p3v0d3i4.cloudfront.net/echo'),
+    () => setSocketUrl(process.env.REACT_APP_SOCKET_URL + '/echo'),
     []
   );
 
