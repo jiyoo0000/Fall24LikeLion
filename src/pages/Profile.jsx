@@ -7,6 +7,7 @@ import "../styles/Profile.css";
 import axios from 'axios';
 
 const Profile = () => {
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -15,7 +16,7 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await axios.put('http://localhost:3001/auth/name', {
+            const response = await axios.put(`${BACKEND_URL}/auth/name`, {
                 headers: { 'Content-Type': 'application/json' },
                 params: {uid: currentUser.uid, name: name}
             })
@@ -30,7 +31,7 @@ const Profile = () => {
 
     const dropCourse = async (courseId) => {
         try {
-            const response = await axios.delete('http://localhost:3001/course', {
+            const response = await axios.delete(`${BACKEND_URL}/course`, {
                 headers: { 'Content-Type': 'application/json' },
                 params: {uid: currentUser.uid, courseId: courseId}
             });
@@ -50,7 +51,7 @@ const Profile = () => {
           if (!currentUser || !currentUser.uid) return; // Wait until currentUser and uid are available
     
           try {
-            const response = await axios.get('http://localhost:3001/course/enrolled', {
+            const response = await axios.get(`${BACKEND_URL}/course/enrolled`, {
               headers: { 'Content-Type': 'application/json' },
               params: { uid: currentUser.uid },
             });

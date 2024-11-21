@@ -13,9 +13,10 @@ import axios from 'axios';
 // TODO: Clean up Home Component
 
 const Home = () => {
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
   const { currentUser } = useAuth();
   // initial socket url
-  const [socketUrl, setSocketUrl] = useState(process.env.REACT_APP_SOCKET_URL);
+  const [socketUrl, setSocketUrl] = useState(process.env.REACT_APP_BACKEND_URL);
   // state to store the message history
   const [messageHistory, setMessageHistory] = useState([]);
 
@@ -56,7 +57,7 @@ const Home = () => {
 
   // function to open the socket connection to the echo route
   const handleClickSetSocketUrl = useCallback(
-    () => setSocketUrl(process.env.REACT_APP_SOCKET_URL + '/echo'),
+    () => setSocketUrl(process.env.REACT_APP_BACKEND_URL + '/echo'),
     []
   );
 
@@ -83,7 +84,7 @@ const Home = () => {
       if (!currentUser || !currentUser.uid) return; // Wait until currentUser and uid are available
 
       try {
-        const response = await axios.get('http://localhost:3001/course/enrolled', {
+        const response = await axios.get(`${BACKEND_URL}/course/enrolled`, {
           headers: { 'Content-Type': 'application/json' },
           params: { uid: currentUser.uid },
         });
@@ -99,7 +100,7 @@ const Home = () => {
       if (!currentClassId) return;
 
       try {
-          const response = await axios.get('http://localhost:3001/chatroom/chatlog', {
+          const response = await axios.get(`${BACKEND_URL}/chatroom/chatlog`, {
               headers: { 'Content-Type': 'application/json' },
               params: { courseID: currentClassId },
           });

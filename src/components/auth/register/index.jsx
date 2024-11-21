@@ -19,6 +19,7 @@ const Register = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(''); // Clear previous errors
+        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
 
         // Validate passwords match
         if (password !== confirmPassword) {
@@ -36,7 +37,7 @@ const Register = () => {
                 const name = `${firstName} ${lastName}`;
 
                 // Send UID and email to backend (if required)
-                await axios.post('http://localhost:3001/auth/signup/', {
+                await axios.post(`${BACKEND_URL}/auth/signup/`, {
                     uid: user.uid,
                     email: user.email,
                     name: name,

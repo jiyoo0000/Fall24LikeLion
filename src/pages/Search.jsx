@@ -6,6 +6,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useAuth } from '../contexts/authContext';
 
 const Search = () => {
+    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
     const { currentUser } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -15,7 +16,7 @@ const Search = () => {
         setSearchTerm(inputValue);
 
         if (inputValue.trim() !== '') {
-            const response = await axios.get('http://localhost:3001/course', {
+            const response = await axios.get(`${BACKEND_URL}/course`, {
                 headers: { 'Content-Type': 'application/json' },
                 params: { course: inputValue },
             });
@@ -32,7 +33,7 @@ const Search = () => {
         try {
             // Make a PUT request to enroll the user in the course
             const response = await axios.put(
-                'http://localhost:3001/course/enroll',
+                `${BACKEND_URL}/course/enroll`,
                 {
                     headers: { 'Content-Type': 'application/json' },
                     params: { uid: currentUser.uid, courseId: courseId },
