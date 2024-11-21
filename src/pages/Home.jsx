@@ -13,10 +13,10 @@ import axios from 'axios';
 // TODO: Clean up Home Component
 
 const Home = () => {
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
+  const BACKEND_URL = process.env.REACT_APP_SOCKET_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
   const { currentUser } = useAuth();
   // initial socket url
-  const [socketUrl, setSocketUrl] = useState(process.env.REACT_APP_BACKEND_URL);
+  const [socketUrl, setSocketUrl] = useState(process.env.REACT_APP_SOCKET_URL);
   // state to store the message history
   const [messageHistory, setMessageHistory] = useState([]);
 
@@ -57,7 +57,7 @@ const Home = () => {
 
   // function to open the socket connection to the echo route
   const handleClickSetSocketUrl = useCallback(
-    () => setSocketUrl(process.env.REACT_APP_BACKEND_URL + '/echo'),
+    () => setSocketUrl(process.env.REACT_APP_SOCKET_URL + '/echo'),
     []
   );
 

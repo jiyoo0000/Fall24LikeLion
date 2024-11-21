@@ -19,7 +19,7 @@ const Register = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage(''); // Clear previous errors
-        const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
+        const BACKEND_URL = process.env.REACT_APP_SOCKET_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
 
         // Validate passwords match
         if (password !== confirmPassword) {

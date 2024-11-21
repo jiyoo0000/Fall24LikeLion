@@ -7,7 +7,7 @@ import "../styles/Profile.css";
 import axios from 'axios';
 
 const Profile = () => {
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
+    const BACKEND_URL = process.env.REACT_APP_SOCKET_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const [name, setName] = useState("");

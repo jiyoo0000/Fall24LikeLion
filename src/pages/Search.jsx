@@ -6,7 +6,7 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useAuth } from '../contexts/authContext';
 
 const Search = () => {
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
+    const BACKEND_URL = process.env.REACT_APP_SOCKET_URL.replace(/^wss:/, 'https:'); //process.env.REACT_APP_BACKEND_URL;
     const { currentUser } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);

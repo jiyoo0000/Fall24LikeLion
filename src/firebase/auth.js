@@ -23,7 +23,7 @@ export const doSignInWithGoogle = async () => {
   const result = await signInWithPopup(auth, provider);
   const user = result.user;
   const fullName = user.displayName || "";
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL.replace(/^wss:/, 'https:');
+  const BACKEND_URL = process.env.REACT_APP_SOCKET_URL.replace(/^wss:/, 'https:');
 
   await axios.post(`${BACKEND_URL}/auth/signup`, {
     uid: user.uid,
